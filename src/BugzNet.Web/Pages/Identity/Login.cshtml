@@ -1,0 +1,54 @@
+﻿@page
+@model BugzNet.Web.Pages.Identity.Login
+@using BugzNet.Core.Utilities;
+@{
+    Layout = "~/Pages/Shared/_LoginLayout.cshtml";
+}
+
+<section class="hero is-fullheight">
+    <div class="hero-body">
+        <div class="box login-box">
+            <div class="container login-container has-width-350-desktop">
+                <figure class="image is-3by1">
+                    <img class="is-rounded" width="150" height="150" src="~/Images/logo.png">
+                </figure>
+                <form asp-page="/Identity/Login" asp-page-handler="Login" asp-route-returnUrl="@ViewData["returnUrl"]">
+                    <div class="field">
+                        <div class="control">
+                            <input class="input" type="email" asp-for="@Model.Data.Email" placeholder="Email">
+                        </div>
+                    </div>
+                    <div class="field">
+                        <div class="control">
+                            <input class="input" type="password" asp-for="@Model.Data.Password" placeholder="Password">
+                        </div>
+                    </div>
+                    <div class="message field is-danger"></div>
+                    <div class="field is-grouped">
+                        <div class="control is-expanded">
+                            <button class="button is-primary is-fullwidth">Sign In!</button>
+                        </div>
+                    </div>
+                    <div class="has-text-danger" asp-validation-summary="All"></div>
+                </form>
+                <div>
+                    <a asp-page="/Identity/ForgotPassword">Forgot Password?</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script nonce="@HttpContext.Items["CSP_NONCE"]">
+    const password = document.getElementById('Data_Password');
+    const message = document.querySelector('.message');
+    const rememberMe = @ViewData["rememberMe"];
+
+    password.addEventListener('keyup', function (e) {
+        if (e.getModifierState('CapsLock')) {
+            message.textContent = 'Caps lock is on!';
+        } else {
+            message.textContent = '';
+        }
+    }); 
+</script>

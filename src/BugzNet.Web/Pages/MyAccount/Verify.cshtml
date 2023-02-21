@@ -1,0 +1,55 @@
+@page
+@model BugzNet.Web.Pages.Identity.Verify
+@{
+    Layout = "~/Pages/Shared/_LoginLayout.cshtml";
+}
+
+<section class="hero is-fullheight">
+    <form style="top: 20%; position: absolute;" method="post" asp-page-handler="Verify">
+        <div class="hero-body">
+            <div class="box login-box">
+                <div class="container login-container has-width-350-desktop">
+                    We have sent you an otp via SMS
+                    <input type="number" max="999999" class="input" placeholder="XXXXXX" asp-for="@Model.Data.OTP" />
+                    <button type="submit" class="button is-rounded is-fullwidth is-primary" style="margin: 5px 0px">Submit</button>
+                    OTP will expire in <span id="cntdwn">02:00</span>
+                    <br/>
+                    <a id="resend">Resend OTP?</a>
+                    <div class="has-text-danger" asp-validation-summary="ModelOnly">
+                        <br/>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</section>
+
+@section Scripts
+{
+    <script nonce="@HttpContext.Items["CSP_NONCE"]">
+        var remainingSecs = 120;
+        function DisplayOtpTimeout() {
+            window.cntdwn.innerText = ("00" + ~~(remainingSecs / 60)).substr(-2, 2) + ':' + ("00" + remainingSecs % 60).substr(-2, 2)
+
+            if (remainingSecs !== 0)  {
+                remainingSecs--;
+            }
+        }
+
+        setInterval(DisplayOtpTimeout, 1000);
+
+        window.resend.onclick = () => {
+            var token = document.querySelector("input[name='xsrf_token']").value;
+
+            fetch("/MyAccount/Verify?handler=Generate",
+            {
+                method:"POST",
+                headers: { "RequestVerificationToken": token }
+            }).then(resp => resp.text())
+            .then(() => {remainingSecs = 120;})
+        }
+
+        window.resend.click()
+    </script>
+    
+}

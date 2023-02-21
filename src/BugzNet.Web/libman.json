@@ -1,0 +1,71 @@
+{
+  "version": "1.0",
+  "defaultProvider": "cdnjs",
+  "libraries": [
+    {
+      "library": "font-awesome@5.11.2",
+      "destination": "wwwroot/lib/font-awesome/"
+    },
+    {
+      "library": "Chart.js@2.8.0",
+      "destination": "wwwroot/lib/Chart.js/"
+    },
+    {
+      "library": "jquery@3.6.0",
+      "destination": "wwwroot/lib/jquery/",
+      "files": [
+        "jquery.min.js"
+      ]
+    },
+    {
+      "library": "jqueryui@1.12.1",
+      "destination": "wwwroot/lib/jqueryui/",
+      "files": [
+        "jquery-ui.min.js"
+      ]
+    },
+    {
+      "library": "jquery-validate@1.19.3",
+      "destination": "wwwroot/lib/jquery-validate/",
+      "files": [
+        "jquery.validate.min.js"
+      ]
+    },
+    {
+      "library": "jquery-validation-unobtrusive@3.2.11",
+      "destination": "wwwroot/lib/jquery-validation-unobtrusive/",
+      "files": [
+        "jquery.validate.unobtrusive.min.js"
+      ]
+    },
+    {
+      "library": "select2@4.0.10",
+      "destination": "wwwroot/lib/select2/"
+    },
+    {
+      "library": "bulma@0.9.3",
+      "destination": "wwwroot/lib/bulma/"
+    },
+    //{
+    //  "library": "bulma-loader@1.0.1",
+    //  "destination": "wwwroot/lib/bulma-loader/"
+    //},
+    //{
+    //  "library": "bulma-modal@1.0.2",
+    //  "destination": "wwwroot/lib/bulma-modal/",
+    //  "files": [
+    //    "modal-fx.min.css",
+    //    "modal-fx.min.js"
+    //  ]
+    //},
+    //{
+    //  "library": "@Wikiki/bulma-calendar@6.1.12",
+    //  "destination": "wwwroot/lib/bulma-calendar/"
+    //},
+    {
+      "provider": "unpkg",
+      "library": "@yaireo/tagify@4.5.0",
+      "destination": "wwwroot/lib/yaireo/tagify/"
+    }
+  ]
+}

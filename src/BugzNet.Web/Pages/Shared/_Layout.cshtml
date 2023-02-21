@@ -1,0 +1,194 @@
+﻿@using BugzNet.Infrastructure;
+@using BugzNet.Infrastructure.Configuration;
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+@inject AppConfig appConfig
+@using BugzNet.Core.Constants;
+<!DOCTYPE html>
+<html>
+<head>
+    <base target="_self">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BugzNet Web UI @AssemblyAttributes.Version</title>
+    <link rel="shortcut icon" href="~/favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="~/lib/font-awesome/css/fontawesome.min.css" />
+    <link rel="stylesheet" href="~/lib/font-awesome/css/brands.min.css" />
+    <link rel="stylesheet" href="~/lib/font-awesome/css/solid.min.css" />
+    <link rel="stylesheet" href="~/lib/bulma/css/bulma.min.css" />
+    <link rel="stylesheet" href="~/lib/bulma/css/bulma-helpers.min.css" />
+    <link rel="stylesheet" href="~/lib/Bulma-modal/css/modal-fx.min.css" />
+    <link rel="stylesheet" href="~/lib/bulma-calendar/css/bulma-calendar.min.css" />
+    <link rel="stylesheet" href="~/lib/bulma-checkradio/bulma-radio-checkbox.min.css" />
+    <link rel="stylesheet" href="~/lib/bulma-checkradio/bulma-checkradio.min.css" />
+    <link rel="stylesheet" href="~/lib/bulma-divider/bulma-divider.min.css" />
+    <link rel="stylesheet" href="~/lib/bulma-loader/bulma-pageloader.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="~/css/custom.css" />
+    <link rel="stylesheet" href="~/lib/Chart.js/Chart.min.css" />
+    <link rel="stylesheet" href="~/lib/select2/css/select2.min.css" />
+</head>
+<body>
+    <!-- nav bar -->
+    <nav class="navbar">
+        <div class="navbar-brand">
+            <div class="navbar-item">
+                <div class="field is-grouped is-grouped-multiline">
+                    <div class="control">
+                        <img src="~/Images/logo.png" alt="BugzNet" width="112" height="28">
+                    </div>
+                    <div class="control">
+                        <div class="tags has-addons">
+                            <span class="tag is-dark">@EnvironmentVariables.ASPNETCORE_ENVIRONMENT.ToUpper()</span>
+                            <span class="tag is-info">@AssemblyAttributes.Version+@AssemblyAttributes.GitHash</span>
+                        </div>
+                    </div>
+                    <div class="control">
+                        <div class="tags has-addons">
+                            <span class="tag is-dark">catalog</span>
+                            <span class="tag is-success">@appConfig.DefaultConnection.GetCatalogName()</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="navMenu" class="navbar-menu">
+            <div class="navbar-end">
+                <p class="navbar-item is-hidden-desktop-only">
+                    <span class="icon">
+                        <i class="fa fa-user"></i>
+                    </span>
+                    <a asp-page="/MyAccount/Index">&nbsp;@User.Identity.Name</a>
+                </p>
+                <div class="control navbar-item is-hidden-desktop-only">
+                    <div class="tags has-addons">
+                        <span id="sesscntdwn" class="tag is-dark">
+                            00:00
+                        </span>
+                        <span id="sessdoor" class="tag is-warning">
+                            <a asp-page="/Identity/Login" asp-page-handler="Logout" class="navbar-item is-hidden-desktop-only">
+                                <span class="icon">
+                                    <i class="fa fa-door-closed"></i>
+                                </span>
+                            </a>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <div class="columns is-fullheight">
+        <!-- main loader -->
+        <div id="page-loader" class="pageloader is-right-to-left is-info">
+            <div class="title">
+                <div class="field has-text-centered">
+                    <label id="loader-title" class="label">Wait while loading.....</label>
+                    <div class="field">
+                        <progress id="progressBar" class="progress is-invisible" value="0" max="100"></progress>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- main side menu -->
+        <div class="column is-2 is-sidebar-menu is-hidden-mobile">
+            <aside class="menu is-sidebar-menu is-hidden-mobile is-fullwidth">
+                <p class="menu-label">
+                    General
+                </p>
+                <ul class="menu-list">
+                    <li>
+                        <a asp-page="/Bugs/Index"><span class="icon is-small"><i class="fa fa-bug"></i></span>&nbsp;Bugs</a>
+                    </li>
+                    <feature name="@BugzNetFeatureFlags.Statistics">
+                        <li>
+                            <a asp-page="/Statistics/Index"><span class="icon is-small"><i class="fa fa-chart-line"></i></span>&nbsp;Statistics</a>
+                        </li>
+                    </feature>
+                </ul>
+                @if (User.Identity.IsAuthenticated && User.IsInRole(BugzRoles.SuperUserRole))
+                {
+                    <p class="menu-label">Administration</p>
+                    <ul class="menu-list">
+                        <li><a>Admin</a></li>
+                        <li>
+                            <ul>
+                                <li>
+                                    <a asp-page="/Admin/Users/Index"><span class="icon is-small"><i class="fa fa-user"></i></span>&nbsp;Users</a>
+                                </li>
+                                <li>
+                                    <a asp-page="/Admin/Audit/Index"><span class="icon is-small"><i class="fa fa-align-left"></i></span>&nbsp;Audit Logs</a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                }
+            </aside>
+        </div>
+        <!-- main body container -->
+        <div class="column is-main-content is-full-height-desktop">
+            @RenderBody()
+        </div>
+    </div>
+    <!-- modal confirmation dialog Container -->
+    <div id="confirm-modal" class="modal modal-fx-slideLeft is-normal">
+        <div class="modal-background"></div>
+        <div id="modal-content" class="modal-content modal-card">
+            <!-- Modal Body Content-->
+            <section id="modal-body" class="modal-card-body modal-notify">
+                <div id="confirmContent" class="notification is-danger">
+                    <h2 class="subtitle tag is-dark">Action Confirmation</h2>
+                    <h1 id="question" class="title"></h1>
+                    <div class="field is-grouped is-grouped-right notify-footer">
+                        @{
+                            string modalActionText = "Ok";
+                            if (ViewData["ModalActionText"] != null)
+                                modalActionText = (string) ViewData["ModalActionText"];
+                        }
+                        <a id="modal-action" href="#" class="button is-rounded modal-btn is-primary">@modalActionText</a>
+                        @if (ViewData["HideModalClose"] == null || (bool) ViewData["HideModalClose"] != true)
+                        {
+                            <a id="modal-close" class="button is-rounded modal-btn modalClose">Cancel</a>
+                        }
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+    <script src="~/lib/jquery/jquery.min.js"></script>
+    <script src="~/lib/jqueryui/jquery-ui.min.js"></script>
+    <script src="~/lib/select2/js/select2.min.js"></script>
+    <script src="~/lib/bulma-calendar/js/bulma-calendar.min.js"></script>
+    <script src="~/lib/Bulma-modal/js/modal-fx.min.js"></script>
+    <script src="~/lib/Chart.js/Chart.min.js"></script>
+    <script src="~/lib/Chart.js/Chart.bundle.min.js"></script>
+    <script src="~/js/site.js"></script>
+    <script src="~/js/confirmation.js"></script>
+    <script nonce="@HttpContextAccessor.HttpContext.Items["CSP_NONCE"]">
+        $(document).ready(function () {
+            $('.readonly').each(function () {
+                $(this).attr("readonly", "true");
+            });
+
+            $('.disabled').each(function () {
+                $(this).attr("disabled", "true");
+            });
+        })
+
+        var remainingSecs = @(appConfig.AuthTimeOutMin * 60);
+        var cntdwn = document.getElementById('sesscntdwn');
+        function DisplaySessionTimeout() {
+            cntdwn.innerText = ("00" + ~~(remainingSecs / 60)).substr(-2, 2) + ':' + ("00" + remainingSecs % 60).substr(-2, 2)
+
+            if (remainingSecs === 0) {
+                var door = document.getElementById('sessdoor');
+                door.classList.remove('is-warning');
+                door.classList.add('is-danger');
+            } else {
+                remainingSecs--;
+            }
+        }
+
+        setInterval(DisplaySessionTimeout, 1000);
+    </script>
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

@@ -1,0 +1,15 @@
+﻿<section>
+    <div class="container">
+        <div class="field is-grouped is-grouped-right">
+            @if (ViewData["DisableSave"] == null)
+            {
+            <div class="control">
+                <button class="button is-link is-success is-rounded" id="modalSubmit" type="submit">Save</button>
+            </div>
+            }
+            <div class="control">
+                <a id="modal-cancel" class="button modal-button-close is-rounded modalClose">Cancel</a>
+            </div>
+        </div>
+    </div>
+</section>

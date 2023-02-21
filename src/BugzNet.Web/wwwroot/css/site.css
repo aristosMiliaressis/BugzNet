@@ -1,0 +1,335 @@
+﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
+for details on configuring this project to bundle and minify static web assets. */
+
+a.navbar-brand {
+  white-space: normal;
+  text-align: center;
+  word-break: break-all;
+}
+
+/* Sticky footer styles
+-------------------------------------------------- */
+html {
+  font-size: 12px;
+}
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+
+.border-top {
+  border-top: 1px solid #e5e5e5;
+}
+.border-bottom {
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.box-shadow {
+  box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
+}
+
+button.accept-policy {
+  font-size: 1rem;
+  line-height: inherit;
+}
+
+/* Sticky footer styles
+-------------------------------------------------- */
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+.footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    white-space: nowrap;
+    /* Set the fixed height of the footer here 
+  height: 40px;*/
+    line-height: 60px; /* Vertically center the text there */
+}
+
+.slides {
+    list-style: none;
+    margin: 0;
+    padding: 10px;
+}
+
+.slide {
+    padding: 0 0 0 15px;
+    background-color: transparent;
+    margin: 0 0 5px;
+    text-align: center;
+    color: black;
+}
+
+.slide-placeholder {
+    background: #F6F7F9;
+    position: relative;
+}
+
+    .slide-placeholder:after {
+        content: " ";
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 15px;
+        background-color: #FFF;
+    }
+
+/* animated arrow*/
+@-webkit-keyframes uparrow {
+    0% {
+        -webkit-transform: translateY(0);
+        opacity: 0.4
+    }
+
+    100% {
+        -webkit-transform: translateY(-0.4em);
+        opacity: 0.9
+    }
+}
+
+@-webkit-keyframes downarrow {
+    0% {
+        -webkit-transform: translateY(0);
+        opacity: 0.4
+    }
+
+    100% {
+        -webkit-transform: translateY(0.4em);
+        opacity: 0.9
+    }
+}
+
+.arrow {
+    border-color: transparent;
+    border-style: solid;
+    border-width: 0 2em;
+    display: block;
+    height: 0;
+    opacity: 0.4;
+    text-indent: -9999px;
+    transform-origin: 20% 20%;
+    width: 0;
+}
+
+.up {
+    -webkit-animation: uparrow 0.6s infinite alternate ease-in-out;
+    border-bottom: 2em solid #32dc79;
+}
+
+.down {
+    -webkit-animation: downarrow 0.6s infinite alternate ease-in-out;
+    border-top: 2em solid #32dc79;
+}
+
+.level-title {
+    font-size: 1.2rem;
+}
+
+/* loader styles*/
+.loader-wrapper {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background: #fff;
+    opacity: 0;
+    z-index: -1;
+    transition: opacity .3s;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 6px;
+}
+
+    .loader-wrapper .loader {
+        height: 80px;
+        width: 80px;
+    }
+
+    .loader-wrapper.is-active {
+        opacity: 2;
+        z-index: 1;
+    }
+
+.is-loading {
+    position: relative;
+}
+
+body {
+    background: #26be65;
+    min-height: 100vh;
+}
+
+    /*.box h2 {
+        text-align: center;
+        font-family: 'Montserrat', sans-serif;
+        padding: 1.5rem 0;
+    }*/
+
+    .box .button {
+        padding: 0;
+        height: 40px;
+        min-width: 160px;
+        transition: all .3s;
+    }
+
+    .box .section{
+        margin-bottom:15px;
+    }
+
+.link-button {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: #6dacff;
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all .4s;
+}
+
+    .link-button img {
+        width: 32px;
+        height: 32px;
+        display: block;
+    }
+
+.panel-block > a {
+    margin-left: 10px;
+}
+
+.panel-block {
+    background: #ffffff;
+}
+.panel-block {
+    background: #ffffff;
+}
+
+.panel-heading {
+    background-color: #ffffff;
+    color: black;
+    border-bottom: solid #232327;
+}
+
+html {
+    overflow-y: hidden;
+}
+
+.opacitygrayscale {
+    opacity: 0.6;
+    filter: grayscale(100%);
+    pointer-events: none;
+}
+
+.is-clickable {
+    cursor: pointer;
+}
+
+.datetimepicker-clear-button {
+    display: none !important;
+}
+
+
+    .m-timepicker:invalid {
+        background-color: red;
+    }
+
+.datepicker-nav button {
+    min-width: 100px !important;
+    width: 100px;
+}
+
+.is-main-content::-webkit-scrollbar {
+    width: 1.5rem;
+}
+/* Track */
+.is-main-content::-webkit-scrollbar-track {
+    background: #f2f2f2;
+}
+
+/* Handle */
+.is-main-content::-webkit-scrollbar-thumb {
+    background: #bfbfbf;
+}
+
+/* Handle on hover */
+    .is-main-content::-webkit-scrollbar-thumb:hover {
+        background: #a6a6a6;
+    }
+
+.tooltip {
+    position: relative;
+    display: inline-block;
+}
+
+.tooltip .tooltiptext {
+    visibility: hidden;
+    width: 1100px;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+    position: absolute;
+    z-index: 10;
+    bottom: 150%;
+    left: 50%;
+    margin-left: -60px;
+}
+
+    .tooltip .tooltiptext::after {
+        content: "";
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        margin-left: -5px;
+        border-width: 5px;
+        border-style: solid;
+        border-color: black transparent transparent transparent;
+    }
+
+.tooltip:hover .tooltiptext {
+    visibility: visible;
+}
+
+.control {
+    text-align: left !important;
+}
+
+.endpoint-table tr:nth-child(even)
+{
+    background-color: #eee;
+}
+
+.endpoint-table tr:nth-child(odd) {
+    background-color: #fff;
+}
+
+.endpoint-table {
+    width: 100%;
+}
+
+.has-long-text {
+    max-width: 300px !important;
+    width: 30% !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+}
+
+.center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

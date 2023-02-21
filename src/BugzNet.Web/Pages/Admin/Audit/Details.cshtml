@@ -1,0 +1,205 @@
+﻿@page
+@model BugzNet.Web.Pages.Admin.Audit.DetailsModel
+@{
+    var execDetailsPanelWidth = (Model.Data.Action == "Insert" || Model.Data.Action == "BatchModification") ? "is-half" : "is-full";
+}
+
+<div class="box">
+    <h2 class="subtitle has-text-centered">Audit Details</h2>
+    <div class="columns">
+        <div class="column is-half" style="margin: 0 auto; flex: auto;">
+            <div class="columns entries wrappanel">
+                <div class="column" style="overflow-y: inherit;">
+                    <div class="card has-equal-height">
+                        <header class="card-header">
+                            <p class="card-header-title">
+                                Details
+                            </p>
+                        </header>
+                        <div class="card-content">
+                            <div class="field is-horizontal">
+                                <div class="field-label is-small">
+                                    <label for="@Model.Data.StartDate" class="label">At</label>
+                                </div>
+                                <div class="field-body">
+                                    <div class="field">
+                                        <p class="control is-fullwidth">
+                                            <input class="input" type="text" name="@Model.Data.StartDate" value="@Model.Data.StartDate" readonly />
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="field is-horizontal">
+                                <div class="field-label is-small">
+                                    <label for="@Model.Data.User" class="label">User</label>
+                                </div>
+                                <div class="field-body">
+                                    <div class="field">
+                                        <p class="control is-fullwidth">
+                                            <input class="input" type="text" name="@Model.Data.User" value="@Model.Data.User" readonly />
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="field is-horizontal">
+                                <div class="field-label is-small">
+                                    <label for="@Model.Data.Action" class="label">Action</label>
+                                </div>
+                                <div class="field-body">
+                                    <div class="field">
+                                        <p class="control is-fullwidth">
+                                            <input class="input" type="text" name="@Model.Data.Action" value="@Model.Data.Action" readonly />
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="field is-horizontal">
+                                <div class="field-label is-small">
+                                    <label for="@Model.Data.Table" class="label">Subject</label>
+                                </div>
+                                <div class="field-body">
+                                    <div class="field">
+                                        <p class="control is-fullwidth">
+                                            <input class="input" type="text" name="@Model.Data.Table" value="@Model.Data.Table" readonly />
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="field is-horizontal">
+                                <div class="field-label is-small">
+                                    <label for="@Model.Data.Table" class="label">Entity Identifier</label>
+                                </div>
+                                <div class="field-body">
+                                    <div class="field">
+                                        <p class="control is-fullwidth">
+                                            <input class="input" type="text" name="@Model.Data.EntityIdentifier" value="@Model.Data.EntityIdentifier" readonly />
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="field is-horizontal">
+                                <div class="field-label is-small">
+                                    <label class="label">Primary Key</label>
+                                </div>
+                                <div class="field-body">
+                                    <div class="field">
+                                        <p class="control is-fullwidth">
+                                            @{ var primaryKey = Model.Data.StrPrimaryKey;}
+                                            <input class="input" type="text" name="PrimaryKey" value="@primaryKey" readonly />
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="field is-horizontal">
+                                <div class="field-label is-small">
+                                    <label class="label">Request Path</label>
+                                </div>
+                                <div class="field-body">
+                                    <div class="field">
+                                        <p class="control is-fullwidth">
+                                            <input class="input" type="text" name="RequestPath" value="@Model.Data.RequestPath" readonly />
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        @if (Model.Data.Action == "Insert"
+        || Model.Data.Action == "BatchModification")
+        {
+            <div class="column is-half" style="margin: 0 auto; flex: auto;">
+                <div class="columns entries wrappanel">
+                    <div class="column">
+                        <div class="card has-equal-height">
+                            <header class="card-header">
+                                <p class="card-header-title">
+                                    Changes
+                                </p>
+                            </header>
+                            <div class="card-content">
+                                @foreach (var change in Model.Data.Changes)
+                                {
+                                    var value = change.Value == null
+                                        ? "<NULL>"
+                                        : change.Value is string ? (string)change.Value : change.Value?.ToString() ?? "";
+
+                                    <div class="field is-horizontal">
+                                        <div class="field-label is-small">
+                                            <label class="label">@change.Key</label>
+                                        </div>
+                                        <div class="field-body">
+                                            <div class="field">
+                                                <p class="control is-fullwidth">
+                                                    <input class="input" type="text" name="@change.Key" value="@value" readonly />
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                            <div class="card-footer">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+        else if (Model.Data.Action == "Update")
+        {
+            <div class="column is-half" style="margin: 0 auto; flex: auto;">
+                <div class="columns entries wrappanel">
+                    <div class="column">
+                        <div class="card has-equal-height">
+                            <header class="card-header">
+                                <p class="card-header-title">
+                                    Changes
+                                </p>
+                            </header>
+                            <div class="card-content">
+                                <table class="table is-fullwidth is-hoverable is-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Property</th>
+                                            <th>Original Value</th>
+                                            <th>Current Value</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var change in Model.Data.Changes)
+                                        {
+                                            var valueTuple = (ValueTuple<object, object>)change.Value;
+                                            var originalValue = valueTuple.Item1  == null
+                                                ? "<NULL>"
+                                                : valueTuple.Item1 is string ? (string)valueTuple.Item1 : valueTuple.Item1?.ToString() ?? "";
+                                            var currentValue = valueTuple.Item2 == null
+                                                ? "<NULL>"
+                                                : valueTuple.Item2 is string ? (string)valueTuple.Item2 : valueTuple.Item2?.ToString() ?? "";
+
+                                            <tr>
+                                                <td>@change.Key</td>
+                                                <td>@originalValue</td>
+                                                <td>@currentValue</td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+
+                            </div>
+                            <div class="card-footer">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+        </div>
+    <div class="field is-grouped is-grouped-right">
+        <p> <a class="button is-rounded is-link" asp-page="Index">Back to List</a></p>
+    </div>
+</div>

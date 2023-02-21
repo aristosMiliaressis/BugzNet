@@ -1,0 +1,26 @@
+﻿@using BugzNet.Core.Constants;
+@{
+    bool AllowCreate = ViewData["AllowCreate"] == null ? true : (bool)ViewData["AllowCreate"];
+    string batchModRootContext = (string) ViewData["BatchModRootContext"];
+}
+
+<form method="get">
+    <section class="section">
+        <div class="box">
+            <div class="columns">
+                <div class="column">
+                    <input class="input is-rounded is-half" placeholder="Input search field" type="text" name="SearchString" value="@Model.Data.CurrentFilter" />
+                </div>
+                <div class="column">
+                    <input type="submit" value="Search" class="button is-rounded is-link" />
+                </div>
+                @if (AllowCreate && User.Identity.IsAuthenticated && !User.IsInRole(BugzRoles.ReadOnlyRole))
+                {
+                    <div class="column">
+                        <a class="button is-rounded is-primary" asp-page="CreateEdit">Create New</a>
+                    </div>
+                }
+            </div>
+        </div>
+    </section>
+</form>

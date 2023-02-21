@@ -1,0 +1,75 @@
+﻿@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+
+@{
+    var prevDisabled = !Model.Results.HasPreviousPage ? "is-invisible" : "";
+    var nextDisabled = !Model.Results.HasNextPage ? "is-invisible" : "";
+    var aspPage = ViewData["aspPage"] ?? "Index";
+}
+<nav class="pagination" role="navigation" aria-label="pagination">
+    <div class="columns is-full-width">
+        <div class="column is-4 is-offset-4">
+            @if (@Model.Results.TotalPages > 1)
+            {
+                <label class="label is-centered">Showing page @Model.Results.PageIndex of @Model.Results.TotalPages Pages of @Model.Results.TotalCount total records</label>
+            }
+            else
+            {
+                <label class="label is-centered">Total Records @Model.Results.TotalCount</label>
+            }
+        </div>
+        <div class="column is-4">
+            <div class="field has-addons f-center">
+                <p class="control">
+                    <a id="prev-link" class="button fixed-width is-rounded  @prevDisabled"
+                       asp-page="@aspPage"
+                       asp-route-sortOrder="@Model.CurrentSort"
+                       asp-route-pageindex="@(Model.Results.PageIndex - 1)"
+                       asp-route-currentFilter="@Model.CurrentFilter">
+                        <span class="icon is-small">
+                            <i class="fas fas fa-arrow-circle-left"></i>
+                        </span>
+                        <span>Previous</span>
+                    </a>
+                </p>
+                <p class="control">
+                    <a id="next-link" class="button fixed-width is-rounded @nextDisabled"
+                       asp-page="@aspPage"
+                       asp-route-sortOrder="@Model.CurrentSort"
+                       asp-route-pageindex="@(Model.Results.PageIndex + 1)"
+                       asp-route-currentFilter="@Model.CurrentFilter">
+                        <span>Next</span>
+                        <span class="icon is-small">
+                            <i class="fas fas fa-arrow-circle-right"></i>
+                        </span>
+                    </a>
+                </p>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<script nonce="@HttpContextAccessor.HttpContext.Items["CSP_NONCE"]">
+    (function () {
+        updateUrlParams('prev-link');
+        updateUrlParams('next-link');
+    })()
+
+    function updateUrlParams(linkId) {
+        var link = document.getElementById(linkId);
+
+        var addedParams = '';
+        var urlParams = new URLSearchParams(window.location.search);
+        for (var entry of urlParams.entries()) {
+            if (entry[0] == 'pageindex' || entry[0] == 'currentsort' || entry[0] == 'currentfilter')
+                continue;
+
+            var delim = link.href.includes("?") || addedParams.includes("?")
+                ? '&'
+                : '?';
+
+            addedParams += delim + entry[0] + '=' + entry[1];
+        }
+
+        link.href += addedParams;
+    }
+</script>

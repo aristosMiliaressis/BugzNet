@@ -1,0 +1,236 @@
+﻿﻿.has-long-text {
+    max-width: 300px !important;
+    width: 30% !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+}
+
+.table td, .table th {
+    vertical-align: middle;
+}
+
+.is-sidebar-menu {
+    padding: 0.8rem;
+    background: #4a4a4a;
+}
+
+    .is-sidebar-menu li a {
+        color: white;
+    }
+
+.columns.is-fullheight {
+    min-height: calc(100vh - ( 3.25rem - .75rem ) );
+    max-height: calc(100vh - ( 3.25rem - .75rem ) );
+    height: calc(100vh - ( 3.25rem - .75rem ) );
+    display: flex;
+    flex-direction: row;
+    justify-content: stretch;
+}
+
+    .columns.is-fullheight .column {
+        overflow-y: auto;
+    }
+
+.is-main-content {
+    background: #F3F2F1;
+}
+
+.section {
+    padding: 0.1rem;
+}
+
+.fixed-width {
+    width: 150px;
+    display: inline-block;
+    text-align: center;
+}
+
+.has-equal-height {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+    .has-equal-height .card-footer {
+        margin-top: auto;
+    }
+
+.is-sidebar-menu {
+    background-color: #006d31;
+}
+
+    .is-sidebar-menu > p.menu-label {
+        background-color: #232327;
+        border-radius: 10px;
+        padding-left: 15px;
+    }
+
+.wrappanel {
+    flex-wrap: wrap;
+}
+
+.lightbox {
+    border-radius: 15px;
+}
+
+.card {
+    border-radius: 15px;
+}
+
+form.box {
+    border-radius: 20px;
+}
+
+.datetimepicker-dummy .datetimepicker-dummy-wrapper {
+    border: 1px solid #20ee4d;
+    cursor: pointer;
+    display: flex;
+    flex: 1 100%;
+    flex-wrap: nowrap;
+    height: 100%;
+    max-width: 100%;
+    border-radius: 5px;
+}
+
+div.field-label > label {
+    font-weight: 400 !important;
+}
+
+th {
+    font-weight: 600 !important;
+}
+
+/* Remove the gray background when the radio - check input is block */
+.is-checkradio[type="checkbox"].is-block + label, .is-checkradio[type="radio"].is-block + label {
+    background: #fff;
+}
+
+.navbar {
+    background-color: #f3f2f1;
+}
+/* Modal style overrides */
+.modal-card-foot {
+    background-color: #f3f2f1;
+}
+
+.modal-card-head {
+    background-color: #F3F2F1;
+}
+
+    .modal-card-head > p {
+        color: black;
+    }
+
+.modal-card {
+    border-radius: 10px;
+}
+
+.modal .modal-content.is-huge {
+    width: 90%;
+}
+
+.modal .modal-content.is-large {
+    width: 60%;
+}
+
+.modal .modal-content.is-normal {
+    width: 50%;
+}
+
+.modal .modal-content.is-small {
+    width: 35%;
+}
+
+.modal-notify {
+    padding: 0px;
+}
+
+.modal-btn {
+    min-width: 120px;
+}
+
+.notify-footer {
+    margin-top: 20px;
+}
+
+.field.has-addons.f-center {
+    justify-content: center !important;
+}
+
+aside > p.menu-label {
+    font-size: 1.00rem;
+}
+
+.required:after {
+    content: ' *';
+    color: red;
+}
+
+input[readonly] {
+    background-color: #F5F5F5;
+}
+
+.select--wrapper {
+    max-width: 200px;
+    width: 100%
+}
+
+#selection {
+    width: 100%;
+}
+
+.table.is-narrow td, .table.is-narrow th {
+    padding: 0.1em 0.1em;
+}
+
+.panel-row {
+    margin: 0.2rem;
+}
+
+.nice-container {
+    border-radius: 55px 5px 55px 5px;
+    background: #FFFFFF;
+    padding: 20px;
+    width: 100%;
+    height: 100%;
+}
+
+.is-indicator {
+    border-width: medium;
+}
+
+.login-container {
+    display: block;
+    padding-right: 10%;
+    padding-left: 10%;
+    align-items: center;
+}
+
+.hero {
+    background-color: #006d21;
+    align-items: center !important;
+}
+
+.login-box {
+    background-color: #f3f2f1;
+    display: block;
+    align-items: center;
+    margin-bottom: 250px;
+    border-radius: 25px;
+}
+
+.center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
+}
+
+.vertical-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 200px;
+  border: 3px solid green;
+}

@@ -1,0 +1,34 @@
+﻿@using BugzNet.Core.Constants;
+@{
+    <!--this is the actual hanlder of the delete action after the confirmation by the user-->
+    string delActionLink = ViewData["ActionLink"] != null 
+        ? (string) ViewData["ActionLink"] + "?id=" + Model
+        : Url.Page("./Index", "Delete", new
+    {
+        id = Model,
+        sortOrder = ViewData["sortOrder"],
+        currentFilter = ViewData["currentFilter"],
+        searchString = ViewData["searchString"],
+        pageIndex = ViewData["pageIndex"]
+    });
+
+    var aspPage = ViewData["AltPage"] == null ? "CreateEdit" : ViewData["AltPage"];
+    bool AllowClone = ViewData["AllowClone"] == null ? true : (bool)ViewData["AllowClone"];
+}
+@if (AllowClone)
+{
+    <a asp-page="@aspPage" asp-route-id="@Model" asp-route-clone="@true">
+        <span class="icon has-text-info">
+            <i class="fas fa-copy"></i>
+        </span>
+    </a>
+}
+
+@if (User.Identity.IsAuthenticated && User.IsInRole(BugzRoles.SuperUserRole))
+{
+    <a class="modal-action-link" data-action-location="@delActionLink" data-action-name="Delete" data-action-type="is-danger">
+        <span class="icon has-text-danger">
+            <i class="fas fa-ban"></i>
+        </span>
+    </a>
+}

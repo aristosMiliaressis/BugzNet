@@ -1,0 +1,13 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <WarningsAsErrors>CA2016</WarningsAsErrors>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
+    <PackageReference Include="Audit.EntityFramework.Core" Version="17.0.4" />
+    <PackageReference Include="AutoMapper" Version="10.0.0" />
+    <PackageReference Include="TimeZoneConverter" Version="3.5.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="5.0.17" />
+  </ItemGroup>
+</Project>

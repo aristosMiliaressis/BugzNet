@@ -1,0 +1,67 @@
+@page
+@model BugzNet.Web.Pages.Bugs.Details
+
+<section>
+    <form method="post" autocomplete="off">
+        <div class="box has-margin-top-15 has-text-centered">
+            <img class="center" width="400" height="400" src="../@Model.Bug.Picture">
+
+            <div class="center has-margin-top-15" style="width: 60%">
+                <form-control-text-box asp-for="@Model.Bug.Name" Readonly="true"></form-control-text-box>
+                <form-control-text-box asp-for="@Model.Bug.Description"></form-control-text-box>
+                <div class="field has-margin-top-15 is-horizontal">
+                    <div class="field-label is-normal"></div>
+                    <div class="field-body">
+                        <div class="field">
+                            <p class="control is-expanded">
+                                <input type="checkbox" class="is-circle is-user-selection"
+                                        id="canFly"
+                                        asp-for="@Model.Bug.CanFly" />
+                                <label for="canFly">Can Fly</label>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="field is-horizontal">
+                    <div class="field-label is-normal"></div>
+                    <div class="field-body">
+                        <div class="field">
+                            <p class="control is-expanded">
+                                <input type="checkbox" class="is-circle is-user-selection"
+                                        id="bites"
+                                        asp-for="@Model.Bug.Bites" />
+                                <label for="bites">Bites</label>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="message is-danger"></div>
+                <br />
+                <div class="has-text-centered">
+                    <span asp-validation-for="@Model.InfoMessage" class="has-text-success"></span>
+                </div>
+                <div class="has-text-centered" asp-validation-summary="ModelOnly">
+                    <span class="has-text-danger">Please correct the following errors</span>
+                </div>
+                <br />
+                <div class="field is-horizontal">
+                    <div class="field-body">
+                        <div class="field is-grouped is-grouped-right">
+                            <div class="control">
+                                <a class="button is-rounded is-link" asp-page="Index">Back to List</a>
+                                <button type="submit" class="button is-rounded is-primary">Save</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+                    
+        </div>
+    </form>
+</section>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script src="~/js/modal.js"></script>
+    <script src="~/lib/Bulma-modal/js/modal-fx.min.js"></script>
+}

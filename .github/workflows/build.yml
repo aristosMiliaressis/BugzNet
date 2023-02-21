@@ -1,0 +1,31 @@
+name: build
+
+on:
+  push:
+  pull_request:
+    branches:
+      - "**" 
+
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix: 
+        os: [ ubuntu-latest, windows-latest ]
+
+    steps:
+      - name: Checkout subject branch
+        uses: actions/checkout@v2
+        with:
+          submodules: recursive
+          token: ${{ secrets.ACCESS_TOKEN }}
+          
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v1
+        with: 
+            dotnet-version: 4.6
+      
+      - name: Build with dotnet
+        run: dotnet build "src/BugzNet.Web/BugzNet.Web.csproj" -c Release

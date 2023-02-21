@@ -1,0 +1,252 @@
+﻿@page
+@using BugzNet.Core.Localization;
+@model BugzNet.Web.Pages.Admin.Audit.Index
+@{
+}
+<div class="container">
+    <form method="get">
+        <section class="section">
+            <div class="box">
+                <div class="columns">
+                    <div class="column">
+                        <input class="input is-rounded is-half" placeholder="Input search field" type="text" asp-for="@Model.Query.SearchString" value="@Model.Data.CurrentFilter" id="searchFormInput" />
+                    </div>
+                    <div class="column">
+                        <input type="submit" value="Search" class="button is-rounded is-link" />
+                    </div>
+                    <div class="column">
+                        <a class="button is-rounded is-link" asp-page-handler="Export">Export</a>
+                    </div>
+                    <div class="column">
+                        <a class="button is-rounded is-danger is-rounded" id="showClearLogFormButton">Clear Older Logs</a>
+                    </div>
+                </div>
+                <div class="search-form" style="display: none">
+                    <div class="columns">
+                        <!-- Table -->
+                        <div class="column is-half">
+                            <div class="field">
+                                <div class="field-label is-normal" style="text-align: left">
+                                    <label class="label">Table</label>
+                                </div>
+                                <div class="field-body">
+                                    <div class="field">
+                                        <div class="control is-expanded is-fullwidth">
+                                            <input type="text" asp-for="@Model.Query.Table" class="input" placeholder="Table" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- User -->
+                        <div class="column is-half">
+                            <div class="columns">
+                                <div class="column is-four-fifths">
+                                    <div class="field">
+                                        <div class="field-label is-normal" style="text-align: left">
+                                            <label class="label">User</label>
+                                        </div>
+                                        <div class="field-body">
+                                            <div class="field">
+                                                <div class="control is-expanded is-fullwidth">
+                                                    <input type="text" asp-for="@Model.Query.User" class="input" placeholder="User" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="column is-one-fifth">
+                                    <span class="icon has-text-danger" id="hideSearchFormButton">
+                                        <i class="fas fa-times-circle" title="close"></i>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="columns">
+                        <!-- Id -->
+                        <div class="column is-half">
+                            <div class="field">
+                                <div class="field-label is-normal" style="text-align: left">
+                                    <label class="label">Id</label>
+                                </div>
+                                <div class="field-body">
+                                    <div class="field">
+                                        <div class="control is-expanded is-fullwidth">
+                                            <input type="text" asp-for="@Model.Query.Id" class="input" placeholder="Id" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Time frame -->
+                        <div class="column is-half">
+                            <div class="field">
+                                <div class="field-label is-normal" style="text-align: left">
+                                    <label class="label">From/To</label>
+                                </div>
+                                <div class="is-info">
+                                    <input id="subjectDateRange" class="input" asp-for="@Model.Query.Timeframe" data-color="info" data-is-range="true" type="date">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="columns">
+                        <div class="column is-full">
+                            <input class="button is-link is-fullwidth" type="submit" value="Search" />
+                        </div>
+                    </div>
+                </div>
+                <div id="clear-logs-form" style="display: none">
+                    <div class="columns">
+                        <div class="column is-half" style="overflow-y: visible">
+                            <div class="field">
+                                <div class="field-label is-normal" style="text-align: left">
+                                    <label class="label">Clear Logs older Than</label>
+                                </div>
+                                <div class="field-body">
+                                    <div class="field">
+                                        <div class="control is-expanded heading">
+                                            <input id="js-delete-date" class="input" data-color="info" type="date" name="date">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="column is-half">
+                            <div class="columns">
+                                <div class="column is-four-fifths">
+                                    <div class="field-label is-normal" style="text-align: left">
+                                        <label class="label">&nbsp;</label>
+                                    </div>
+
+                                    <a id="js-delete-logs" class="modal-action-link button is-danger is-fullwidth" data-action-name="delete" data-action-type="is-danger">Delete Logs</a>
+                                </div>
+                                <div class="column is-one-fifth">
+                                    <span class="icon has-text-danger" id="hideClearLogFormButton">
+                                        <i class="fas fa-times-circle" title="close"></i>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </form>
+    <section class="section">
+        <div class="box">
+            <div class="has-text-centered">
+                <span asp-validation-for="@Model.InfoMessage" class="has-text-success"></span>
+            </div>
+            <div class="has-text-centered" asp-validation-summary="ModelOnly">
+                <span class="has-text-danger tag is-danger is-light">The following errors occured on last action execution:</span>
+            </div>
+            <table class="table is-fullwidth is-hoverable is-striped">
+                @if (Model.Data.Results.TotalPages > 1)
+                {
+                    <partial name="_pager" model="@Model.Data" />
+                }
+                <thead>
+                    <tr>
+                        <th>User</th>
+                        <th>Action</th>
+                        <th style="width: 20%">Id</th>
+                        <th>Table</th>
+                        <th>At</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.Data.Results)
+                    {
+                        var color = item.Action switch
+                        {
+                            "Insert" => "#00e673",
+                            "Update" => "#ffad33",
+                            "Delete" => "#e60000",
+                            "BatchChange" => "#cc00cc",
+                            _ => "#FF0000"
+                        };
+
+                        <tr>
+                            <td>@item.User</td>
+                            <td style="background-color: @color">@item.Action</td>
+                            <td>@(item.StrPrimaryKey)</td>
+                            <td>@item.Table</td>
+                            <td>@item.At</td>
+                            <td>
+                                <a asp-page="Details" asp-route-id="@item.Id" asp-route-clone="@true">
+                                    <span class="icon has-text-info">
+                                        <i class="fas fa-info-circle"></i>
+                                    </span>
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </section>
+</div>
+
+@section Scripts {
+    <script nonce="@HttpContext.Items["CSP_NONCE"]">
+        window.hideClearLogFormButton.addEventListener('click', hideClearLogForm);
+        window.hideSearchFormButton.addEventListener('click', hideSearchForm);
+        window.showClearLogFormButton.addEventListener('click', showClearLogForm);
+        window.searchFormInput.addEventListener('click', showSearchForm);
+        document.getElementById('js-delete-logs').addEventListener('click', addHandler);
+
+        function showClearLogForm() {
+            var searchForm = document.getElementById('clear-logs-form');
+
+            searchForm.style.display = 'block';
+        }
+
+        function hideClearLogForm() {
+            var searchForm = document.getElementById('clear-logs-form');
+
+            searchForm.style.display = 'none';
+        }
+
+        function showSearchForm() {
+            var searchForm = document.getElementsByClassName('search-form')[0];
+
+            searchForm.style.display = 'block';
+        }
+
+        function hideSearchForm() {
+            var searchForm = document.getElementsByClassName('search-form')[0];
+
+            searchForm.style.display = 'none';
+        }
+
+        (function () {
+            calendarConfig = 
+            {
+                dateFormat: 'DD/MM/YYYY',
+                minDate: new Date(1900, 1, 1),
+                maxDate: new Date('@LocalizationUtility.LocalTime.ToString("MM/dd/yyyy")'),
+                endDate: new Date('@Model.Query.To.ToString("MM/dd/yyyy")'),
+                weekStart: 1,
+                showTodayButton: 'false'
+            };
+
+            if ("@Model.Query.From.HasValue" == "true")
+            {
+                calendarConfig.startDate = new Date('@Model.Query.From.Value.ToString("MM/dd/yyyy")');
+            }
+
+            // Initialize all input of type date
+            var calendars = bulmaCalendar.attach('[type="date"]', calendarConfig);
+        })()
+
+        function addHandler() {
+            var date = document.getElementById('js-delete-date');
+            var btn = document.getElementById('js-delete-logs');
+            btn.setAttribute('data-action-location', '@HttpContext.Request.PathBase/Admin/Audit?handler=Delete&date=' + date.value);
+            btn.setAttribute('data-full-text', 'Are you sure you want to delete all log entries recorded prior to ' + date.value + '?');
+        }
+    </script>
+}

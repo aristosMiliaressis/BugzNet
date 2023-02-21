@@ -1,0 +1,58 @@
+[
+    {
+        "Name": "Bed Bug",
+        "Description": "",
+        "CanFly": false,
+        "Bites": true,
+        "Picture": "Images/bed_bug.jpg"
+    },
+    {
+        "Name": "Boxelder Bug",
+        "Description": "",
+        "CanFly": false,
+        "Bites": true,
+        "Picture": "Images/boxelder_bug.jpg"
+    },
+    {
+        "Name": "Coccinella",
+        "Description": "",
+        "CanFly": true,
+        "Bites": false,
+        "Picture": "Images/coccinella.jpg"
+    },
+    {
+        "Name": "Giant Water Bug",
+        "Description": "",
+        "CanFly": false,
+        "Bites": true,
+        "Picture": "Images/giant_water_bug.jpg"
+    },
+    {
+        "Name": "Off by One Bug",
+        "Description": "The worsest of them all!",
+        "CanFly": false,
+        "Bites": true,
+        "Picture": "Images/off_by_one.jpg"
+    },
+    {
+        "Name": "Praying Mantis",
+        "Description": "",
+        "CanFly": false,
+        "Bites": false,
+        "Picture": "Images/praying_mantis.jpg"
+    }, 
+    {
+        "Name": "Stink Bug",
+        "Description": "",
+        "CanFly": false,
+        "Bites": false,
+        "Picture": "Images/stink_bug.jpg"
+    },
+    {
+        "Name": "Scarab Beetle",
+        "Description": "",
+        "CanFly": true,
+        "Bites": false,
+        "Picture": "Images/scarab_beetle.jpg"
+    }
+]

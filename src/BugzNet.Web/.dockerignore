@@ -1,0 +1,13 @@
+# blacklist all
+*
+
+# whitelist
+!.git/**
+!src/**
+!entrypoint.sh
+
+# blacklist
+src/**/bin
+src/**/obj
+src/**/node_modules
+#src/**/appsettings.*.json # we access those from a volume on the dockerhost

@@ -1,0 +1,37 @@
+version: '3.4'
+
+services:
+  bugznet_web:
+    container_name: bugznet_web
+    hostname: bugznet_web
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+      HARD_MODE: "true"
+    build:
+      context: .
+      dockerfile: src/BugzNet.Web/Dockerfile
+    links:
+      - "bugznet_db:bugznet_db"
+    ports:
+      - "80:80"
+    volumes:
+      - ./logs:/logs
+
+  bugznet_db:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    container_name: bugznet_db
+    hostname: bugznet_db
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_SA_PASSWORD: "Qwerty12"
+      SA_PASSWORD: "Qwerty12"
+    ports:
+      - "1433:1433"
+    volumes:
+      - type: volume
+        source: data
+        target: /var/opt/mssql
+
+volumes:
+  data:
+  

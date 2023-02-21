@@ -1,0 +1,134 @@
+﻿@page
+@model BugzNet.Web.Pages.Admin.Users.CreateEdit
+@{
+    string action = Model.Data?.Id == null ? "Create" : "Edit";
+}
+
+<div class="columns">
+    <div class="column is-full is-multiline is-fullheight">
+        <div class="box has-margin-top-15 has-text-centered">
+            <h1 class="title">@action User</h1>
+            <form method="post" autocomplete="off" asp-page-handler="@action">
+                @Html.HiddenFor(m => m.Data.Id)
+                <div class="field is-horizontal">
+                    <div class="field-label is-normal">
+                        <label class="label">Email</label>
+                    </div>
+                    <div class="field-body">
+                        <div class="field">
+                            <p class="control is-expanded has-icons-left">
+                                <input autocomplete="off" asp-for="@Model.Data.Email" class="input" type="text" placeholder="Email">
+                                <span class="icon is-small is-left">
+                                    <i class="fas fa-envelope"></i>
+                                </span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="field is-horizontal">
+                    <div class="field-label is-normal">
+                        <label class="label">Phone Number</label>
+                    </div>
+                    <div class="field-body">
+                        <div class="field">
+                            <p class="control is-expanded is-fullwidth has-icons-left">
+                                <input autocomplete="off" asp-for="@Model.Data.PhoneNumber" class="input" type="text" placeholder="69********">
+                                <span class="icon is-small is-left">
+                                    <i class="fas fa-mobile"></i>
+                                </span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="field is-horizontal">
+                    <div class="field-label is-normal">
+                        <label class="label">Role</label>
+                    </div>
+                    <div class="field-body">
+                        <div class="field">
+                            <p class="control is-expanded is-fullwidth has-icons-left">
+                                <span class="select is-fullwidth">
+                                    <select autocomplete="off" asp-for="@Model.Data.Role" asp-items="@Model.Data.RoleOptions" style="width: 100%"></select>
+                                </span>
+                                <span class="icon is-small is-left">
+                                    <i class="fas fa-user-alt"></i>
+                                </span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                @if (action == "Create")
+                {
+                    <div class="field is-horizontal">
+                        <div class="field-label is-normal">
+                            <label class="label">Password</label>
+                        </div>
+                        <div class="field-body">
+                            <div class="field">
+                                <p class="control is-expanded is-fullwidth has-icons-left">
+                                    <input autocomplete="new-password" asp-for="@Model.Data.Password" class="input" type="password" placeholder="********">
+                                    <span class="icon is-small is-left">
+                                        <i class="fas fa-user-secret"></i>
+                                    </span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="field is-horizontal">
+                        <div class="field-label is-normal">
+                            <label class="label">Confirmation Password</label>
+                        </div>
+                        <div class="field-body">
+                            <div class="field">
+                                <p class="control is-expanded is-fullwidth has-icons-left">
+                                    <input autocomplete="new-password" asp-for="@Model.Data.ConfirmationPassword" class="input" type="password" placeholder="********">
+                                    <span class="icon is-small is-left">
+                                        <i class="fas fa-user-secret"></i>
+                                    </span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                }
+                <div class="message is-danger"></div>
+                <br />
+                <div class="has-text-centered">
+                    <span asp-validation-for="@Model.InfoMessage" class="has-text-success"></span>
+                </div>
+                <div class="has-text-centered" asp-validation-summary="ModelOnly">
+                    <span class="has-text-danger">Please correct the following errors</span>
+                </div>
+                <br />
+                <div class="field is-horizontal">
+                    <div class="field-body">
+                        <div class="field is-grouped is-grouped-right">
+                            <div class="control">
+                                <a class="button is-rounded is-link" asp-page="Index">Back to List</a>
+                                <button type="submit" class="button is-rounded is-primary">Save</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts
+{
+    <script nonce="@HttpContext.Items["CSP_NONCE"]">
+        const passwordFields = document.querySelectorAll('input[type=password]');
+        const message = document.querySelector('.message');
+
+        for (field of passwordFields) {
+            field.addEventListener('keyup', function (e) {
+                if (e.getModifierState('CapsLock')) {
+                    message.textContent = 'Caps lock is on';
+                } else {
+                    message.textContent = '';
+                }
+            });
+        }
+    </script>
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -1,0 +1,47 @@
+﻿@page
+@model BugzNet.Web.Pages.MyAccount.IndexModel
+
+<div class="columns">
+    <div class="column is-full is-multiline is-fullheight">
+        <div class="box has-margin-top-15 has-text-centered">
+            <h1 class="title">My Account</h1>
+            <div class="field is-horizontal">
+                <div class="field-label is-normal">
+                    <label class="label">&nbsp;Email</label>
+                </div>
+                <div class="field-body">
+                    <div class="field">
+                        <p class="control is-expanded has-icons-left">
+                            <input asp-for="@Model.Data.Email" class="input" type="text" placeholder="Email" disabled>
+                            <span class="icon is-small is-left">
+                                <i class="fas fa-envelope"></i>
+                            </span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="field is-horizontal">
+                <div class="field-label is-normal">
+                    <label class="label">&nbsp;Phone Number</label>
+                </div>
+                <div class="field-body">
+                    <div class="field">
+                        <p class="control is-expanded is-fullwidth has-icons-left">
+                            <input asp-for="@Model.Data.PhoneNumber" class="input" type="text" placeholder="69********" disabled>
+                            <span class="icon is-small is-left">
+                                <i class="fas fa-mobile"></i>
+                            </span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <br />
+            <div class="has-text-centered">
+                <span asp-validation-for="@Model.InfoMessage" class="has-text-success"></span>
+            </div>
+            <div class="field is-grouped is-grouped-right">
+                <a asp-page="/MyAccount/ChangePassword" class="button is-rounded is-link">Change Password</a>
+            </div>
+        </div>
+    </div>
+</div>
