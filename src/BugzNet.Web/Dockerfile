@@ -23,17 +23,14 @@ RUN pip3 install selenium==3.141.0
 
 # Setup emulated user
 COPY ./.emulator/geckodriver /usr/bin/
-COPY ./.emulator/emulate_cron /etc/cron.d/emulate_cron
 COPY ./.emulator/emulate_admin.py /app/emulate_admin.py
 COPY ./.emulator/emulate_user.py /app/emulate_user.py
-RUN chmod 0644 /etc/cron.d/emulate_cron \
-	&& chmod +x /usr/bin/geckodriver \
+RUN chmod +x /usr/bin/geckodriver \
 	&& chmod +x /app/emulate_admin.py \
 	&& chmod +x /app/emulate_user.py
-
-RUN crontab /etc/cron.d/emulate_cron
 
 WORKDIR /app
 COPY --from=build /app/publish .
 
-CMD ["dotnet", "BugzNet.Web.dll"]
+RUN chmod +x /app/entrypoint.sh
+ENTRYPOINT /app/entrypoint.sh

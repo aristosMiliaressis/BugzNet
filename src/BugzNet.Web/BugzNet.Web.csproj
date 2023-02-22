@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+<Project Sdk="Microsoft.NET.Sdk.Web">
   <PropertyGroup>
     <Authors>arist0phanes</Authors>
     <Product>BugzNet</Product>
@@ -63,5 +63,10 @@
     <ProjectReference Include="..\BugzNet.Application\BugzNet.Application.csproj" />
     <ProjectReference Include="..\BugzNet.Core\BugzNet.Core.csproj" />
     <ProjectReference Include="..\BugzNet.Infrastructure\BugzNet.Infrastructure.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="entrypoint.sh">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content> 
   </ItemGroup>
 </Project>
