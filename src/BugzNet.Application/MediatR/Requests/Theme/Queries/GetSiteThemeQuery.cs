@@ -1,5 +1,8 @@
 using BugzNet.Application.Requests.Theme.Commands;
 using MediatR;
+using System;
+using System.IO;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -14,7 +17,19 @@ namespace BugzNet.Application.Requests.Theme.Queries
     {
         public async Task<EditSiteThemeCommand> Handle(GetSiteThemeQuery message, CancellationToken token)
         {
-            return null;
+            var fileName = message.Theme;
+            var pattern = "\\.\\./";
+
+            while (Regex.Match(fileName, pattern).Success)
+                fileName = Regex.Replace(fileName, pattern, "");
+
+            var themePath = Path.Combine($"{AppContext.BaseDirectory}/wwwroot/css/", fileName);
+
+            return new EditSiteThemeCommand
+            {
+                Theme = message.Theme,
+                Content = await File.ReadAllTextAsync(themePath, token)
+            };
         }
     }
 }

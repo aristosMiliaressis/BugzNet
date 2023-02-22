@@ -68,7 +68,7 @@ verify_otp() {
                         && printf "\nCookieJar: $cookieJar\n" \
                         && cat $cookieJar | grep BugzNet-Session \
                         && exit 0
-        sleep 1
+        #sleep 1
 }
 
 mono otp.exe $start $end | while read otp; do verify_otp $otp; done

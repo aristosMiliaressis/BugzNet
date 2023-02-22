@@ -11,11 +11,11 @@ namespace BugzNet.Web.Pages.Admin.Theme
         [BindProperty]
         public EditSiteThemeCommand Data { get; set; }
 
-        public async Task OnGetAsync(string lastInfoMessage = "", string lastErrorMessage = "")
+        public async Task OnGetAsync(string id, string lastInfoMessage = "", string lastErrorMessage = "")
         {
             HandleDisplayMessages(lastInfoMessage, lastErrorMessage);
 
-            Data = await Mediator.Send(new GetSiteThemeQuery());
+            Data = await Mediator.Send(new GetSiteThemeQuery() { Theme = id });
         }
 
         public async Task<IActionResult> OnPostAsync()

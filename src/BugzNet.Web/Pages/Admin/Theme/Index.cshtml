@@ -1,5 +1,5 @@
 ﻿@page
-@model BugzNet.Web.Pages.Admin.Users.Index
+@model BugzNet.Web.Pages.Admin.Theme.Index
 @{
     <!--Put these values on the ViewModel in order to be used in Redirect after GetActions-->
     ViewData["sortOrder"] = Model.Data.CurrentSort;
@@ -24,26 +24,19 @@
                 }
                 <thead>
                     <tr>
-                        <th></th>
-                        <th>Actions</th>
+                        <th>Name</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @{ 
-                        int ti = 0;
-                        ViewData["AllowClone"] = false;
-                    }
                     @foreach (var item in Model.Data.Results)
                     {
                     <tr>
                         <td>
-                            
-                        </td>
-                        <td>
-                            <partial name="_listActions" model="@item.Id" />
+                            <a asp-page="Edit" asp-route-id="@item.Name">
+                                @Html.DisplayFor(_ => item.Name)
+                            </a>
                         </td>
                     </tr>
-                        ti++;
                     }
                 </tbody>
             </table>
