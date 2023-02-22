@@ -98,11 +98,11 @@
                     <li>
                         <a asp-page="/Bugs/Index"><span class="icon is-small"><i class="fa fa-bug"></i></span>&nbsp;Bugs</a>
                     </li>
-                    <feature name="@BugzNetFeatureFlags.Statistics">
+                    @* <feature name="@BugzNetFeatureFlags.Statistics">
                         <li>
                             <a asp-page="/Statistics/Index"><span class="icon is-small"><i class="fa fa-chart-line"></i></span>&nbsp;Statistics</a>
                         </li>
-                    </feature>
+                    </feature> *@
                 </ul>
                 @if (User.Identity.IsAuthenticated && User.IsInRole(BugzRoles.SuperUserRole))
                 {
@@ -111,6 +111,9 @@
                         <li><a>Admin</a></li>
                         <li>
                             <ul>
+                                <li>
+                                    <a asp-page="/Admin/Theme/Edit"><span class="icon is-small"><i class="fa fa-pen"></i></span>&nbsp;Site Theme</a>
+                                </li>
                                 <li>
                                     <a asp-page="/Admin/Users/Index"><span class="icon is-small"><i class="fa fa-user"></i></span>&nbsp;Users</a>
                                 </li>

@@ -1,0 +1,52 @@
+﻿@page
+@model BugzNet.Web.Pages.Admin.Users.Index
+@{
+    <!--Put these values on the ViewModel in order to be used in Redirect after GetActions-->
+    ViewData["sortOrder"] = Model.Data.CurrentSort;
+    ViewData["currentFilter"] = Model.Data.CurrentFilter;
+    ViewData["searchString"] = Model.Data.SearchString;
+    ViewData["pageIndex"] = Model.Data.Results.PageIndex;
+}
+<div class="container">
+    <partial name="_actionbar" model="@Model" />
+    <section class="section">
+        <div class="box">
+            <div class="has-text-centered">
+                <span asp-validation-for="@Model.InfoMessage" class="has-text-success"></span>
+            </div>
+            <div class="has-text-centered" asp-validation-summary="ModelOnly">
+                <span class="has-text-danger tag is-danger is-light">The following errors occured on last action execution:</span>
+            </div>
+            <table class="table is-fullwidth is-hoverable is-striped">
+                @if (Model.Data.Results.TotalPages > 1)
+                {
+                    <partial name="_pager" model="@Model.Data" />
+                }
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{ 
+                        int ti = 0;
+                        ViewData["AllowClone"] = false;
+                    }
+                    @foreach (var item in Model.Data.Results)
+                    {
+                    <tr>
+                        <td>
+                            
+                        </td>
+                        <td>
+                            <partial name="_listActions" model="@item.Id" />
+                        </td>
+                    </tr>
+                        ti++;
+                    }
+                </tbody>
+            </table>
+        </div>
+    </section>
+</div>
