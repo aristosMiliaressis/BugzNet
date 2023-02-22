@@ -1,9 +1,8 @@
 
-# BugzNet
+# BugzNet ![build: tag](https://github.com/aristosMiliaressis/BugzNet/actions/workflows/build.yml/badge.svg)
 
 An intentionally vulnerable .NET webapp
 
-Currently only contains auth related bugs.
 
 Run `docker-compose up` to start
 
