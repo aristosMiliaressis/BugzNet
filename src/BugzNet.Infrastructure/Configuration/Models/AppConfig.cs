@@ -17,6 +17,7 @@ namespace BugzNet.Infrastructure.Configuration
         public bool UseSwagger { get; set; }
         public bool UseMiniProfiler { get; set; }
         public string TokenSigningKey { get; set; }
+        public string HMACSecret { get; set; }
         public string WebRequestStaticToken { get; set; }
         public SentryConfig Sentry { get; set; }
         public EmailSender EmailSender { get; set; }

@@ -100,13 +100,14 @@ namespace BugzNet.Web
 
             app.UseAuthorization();
 
+            app.UseMiddleware<ExceptionHandlingMiddleware>();
+            app.UseMiddleware<RequestLoggingMiddleware>();
+
             app.UseWhen(context => !context.Request.Path.StartsWithSegments("/api") && EnvironmentVariables.HARD_MODE, appBuilder =>
             {
                 appBuilder.UseMiddleware<OtpMiddleware>();
                 //appBuilder.UseMiddleware<MustChangePasswordMiddleware>();
             });
-            app.UseMiddleware<RequestLoggingMiddleware>();
-            app.UseMiddleware<ExceptionHandlingMiddleware>();
 
             app.UseEndpoints(endpoints =>
             {

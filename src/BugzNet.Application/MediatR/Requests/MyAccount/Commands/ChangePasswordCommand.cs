@@ -11,6 +11,11 @@ using System.Threading;
 using System.Threading.Tasks;
 using BugzNet.Core.Entities.Identity;
 using BugzNet.Core.Constants;
+using BugzNet.Application.Requests.Identity.Commands;
+using System.Text;
+using Newtonsoft.Json;
+using BugzNet.Core.Utilities;
+using BugzNet.Infrastructure.Configuration;
 
 namespace BugzNet.Application.Requests.MyAccount.Commands
 {
@@ -27,41 +32,36 @@ namespace BugzNet.Application.Requests.MyAccount.Commands
     public class ChangePasswordCommandHandler : IRequestHandler<ChangePasswordCommand, CommandResponse>
     {
         private readonly BugzNetDataContext _context;
-        private readonly UserManager<BugzUser> _userManager;
         private readonly SignInManager<BugzUser> _signInManager;
-        private readonly string _email;
+        private readonly AppConfig _config;
 
-        public ChangePasswordCommandHandler(BugzNetDataContext context, UserManager<BugzUser> userManager, SignInManager<BugzUser> signInManager, IHttpContextAccessor httpContextAccessor)
+        public ChangePasswordCommandHandler(BugzNetDataContext context, SignInManager<BugzUser> signInManager, AppConfig config)
         {
             _context = context;
-            _userManager = userManager;
             _signInManager = signInManager;
-
-            _email = httpContextAccessor.HttpContext.User.Identity.Name;
+            _config = config;
         }
 
         public async Task<CommandResponse> Handle(ChangePasswordCommand command, CancellationToken token)
         {
-            BugzUser user = await _userManager.FindByEmailAsync(_email);
+            BugzUser user = await _signInManager.UserManager.FindByEmailAsync(_signInManager.Context.User.Identity.Name);
 
-            IdentityResult result = await _userManager.ChangePasswordAsync(user, command.CurrentPassword, command.NewPassword);
+            IdentityResult result = await _signInManager.UserManager.ChangePasswordAsync(user, command.CurrentPassword, command.NewPassword);
             if (!result.Succeeded)
             {
                 return CommandResponse.WithErrors(result.Errors.Select(e => new CommandError(e.Code, e.Description)).ToArray());
             }
 
-            var claim =  user.Claims?.FirstOrDefault(c => c.ClaimType == BugzClaims.MustChangePass);
-            if (claim != null)
-            {
-                var res = await _userManager.RemoveClaimAsync(user, claim.ToClaim());
-                if (!res.Succeeded)
-                    throw new Exception("Failed to remove Must Change Pass claim: " + string.Join(Environment.NewLine, res.Errors.Select(e => $"{e.Code}: {e.Description}")));
-            }
-            user.MustChangePassword = false;
-            _context.Users.Update(user);
+            var cookie = _signInManager.Context.Request.Cookies[AuthState.CookieName];
+            var value = cookie.Split(".")[0];
+            var state = JsonConvert.DeserializeObject<AuthState>(Encoding.UTF8.GetString(Convert.FromBase64String(value)));
 
-            await _context.SaveChangesAsync(token);
-            await _signInManager.SignOutAsync();
+            state.VerificationRequired = false;
+
+            var val = Convert.ToBase64String(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(state)));
+            var signature = CryptoUtility.Sign(val, _config.HMACSecret);
+
+            _signInManager.Context.Response.Cookies.Append(AuthState.CookieName, $"{val}.{signature}");
 
             return CommandResponse.Ok();
         }

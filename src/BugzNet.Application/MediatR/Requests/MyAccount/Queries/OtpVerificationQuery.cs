@@ -12,6 +12,12 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
 using BugzNet.Core.Localization;
+using BugzNet.Core.Utilities;
+using BugzNet.Application.Requests.Identity.Commands;
+using System.Text;
+using Newtonsoft.Json;
+using System;
+using BugzNet.Infrastructure.Configuration;
 
 namespace BugzNet.Application.Requests.MyAccount.Queries
 {
@@ -25,11 +31,13 @@ namespace BugzNet.Application.Requests.MyAccount.Queries
     {
         private readonly BugzNetDataContext _context;
         private readonly SignInManager<BugzUser> _signInManager;
+        private readonly AppConfig _config;
 
-        public OtpVerificationQueryHandler(BugzNetDataContext db, SignInManager<BugzUser> signInManager)
+        public OtpVerificationQueryHandler(BugzNetDataContext db, SignInManager<BugzUser> signInManager, AppConfig config)
         {
             _signInManager = signInManager;
             _context = db;
+            _config = config;
         }
 
         public async Task<bool> Handle(OtpVerificationQuery message, CancellationToken token)
@@ -51,16 +59,16 @@ namespace BugzNet.Application.Requests.MyAccount.Queries
             if (LocalizationUtility.LocalTime > otp.CreatedOn.Add(OTP.Expiration))
                 return false;
 
-            var claim = _signInManager.Context.User.Claims?.FirstOrDefault(c => c.Type == BugzClaims.SecondFactorRequied);
-            if (claim != null)
-            {
-                var claimsPrincipal = (ClaimsPrincipal) _signInManager.Context.User;
-                var identity = (ClaimsIdentity)claimsPrincipal.Identity;
-                identity.RemoveClaim(claim);
-                claimsPrincipal.AddIdentity(identity);
+            var cookie = _signInManager.Context.Request.Cookies[AuthState.CookieName];
+            var value = cookie.Split(".")[0];
+            var state = JsonConvert.DeserializeObject<AuthState>(Encoding.UTF8.GetString(Convert.FromBase64String(value)));
 
-                await _signInManager.Context.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, claimsPrincipal);
-            }
+            state.VerificationRequired = false;
+
+            var val = Convert.ToBase64String(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(state)));
+            var signature = CryptoUtility.Sign(val, _config.HMACSecret);
+
+            _signInManager.Context.Response.Cookies.Append(AuthState.CookieName, $"{val}.{signature}");
 
             return true;
         }

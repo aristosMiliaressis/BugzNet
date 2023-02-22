@@ -12,6 +12,10 @@ using System.Threading;
 using System.Threading.Tasks;
 using BugzNet.Core.Constants;
 using BugzNet.Core.Entities.Identity;
+using Newtonsoft.Json;
+using BugzNet.Core.Utilities;
+using System.Text;
+using BugzNet.Infrastructure.Configuration;
 
 namespace BugzNet.Application.Requests.Identity.Commands
 {
@@ -39,12 +43,14 @@ namespace BugzNet.Application.Requests.Identity.Commands
     {
         private readonly SignInManager<BugzUser> _signInManager;
         private readonly UserManager<BugzUser> _userManager;
+        private readonly AppConfig _config;
         private readonly IReportSender _sender;
 
-        public LoginCommandHandler(SignInManager<BugzUser> signInManager, UserManager<BugzUser> userManager, IReportSender sender)
+        public LoginCommandHandler(SignInManager<BugzUser> signInManager, UserManager<BugzUser> userManager, IReportSender sender, AppConfig config)
         {
             _signInManager = signInManager;
             _userManager = userManager;
+            _config =  config;
             _sender = sender;
         }
 
@@ -69,24 +75,35 @@ namespace BugzNet.Application.Requests.Identity.Commands
             var claimsPrincipal = await _signInManager.CreateUserPrincipalAsync(user);
             if (claimsPrincipal?.Identity is ClaimsIdentity claimsIdentity)
             {
-                if (user.MustChangePassword && !claimsIdentity.HasClaim(c => c.Type == BugzClaims.MustChangePass))
+                var accountState = new AuthState();
+
+                if (user.MustChangePassword)
                 {
-                    var claim = new Claim(BugzClaims.MustChangePass, string.Empty);
-                    claimsIdentity.AddClaim(claim);
-                    await _userManager.AddClaimAsync(user, claim);
+                    accountState.PasswordChangeRequired = true;
                 }
 
-                if (user.TwoFactorEnabled && !claimsIdentity.HasClaim(c => c.Type == BugzClaims.SecondFactorRequied))
+                if (user.TwoFactorEnabled)
                 {
-                    var claim = new Claim(BugzClaims.SecondFactorRequied, string.Empty);
-                    claimsIdentity.AddClaim(claim);
-                    await _userManager.AddClaimAsync(user, claim);
+                    accountState.VerificationRequired = true;
                 }
+
+                var val = Convert.ToBase64String(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(accountState)));
+                var signature = CryptoUtility.Sign(val, _config.HMACSecret);
+
+                _signInManager.Context.Response.Cookies.Append(AuthState.CookieName, $"{val}.{signature}");
             }
             
             await _signInManager.Context.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, claimsPrincipal);
 
             return result.Succeeded;
         }
+    }
+    
+
+    public class AuthState
+    {
+        public static string CookieName = "BugzNet-AuthState";
+        public bool VerificationRequired { get; set; }
+        public bool PasswordChangeRequired { get; set; }
     }
 }
