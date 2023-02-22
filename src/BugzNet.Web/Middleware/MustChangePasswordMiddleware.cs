@@ -44,7 +44,7 @@ namespace BugzNet.Web.Middleware
                     return;
                 }
 
-                var state = JsonConvert.DeserializeObject<AuthState>(Encoding.UTF8.GetString(Convert.FromBase64String(value)), new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All });
+                var state = JsonConvert.DeserializeObject<AuthState>(Encoding.UTF8.GetString(Convert.FromBase64String(value)), new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.Auto });
 
                 if (state.PasswordChangeRequired)
                 {

