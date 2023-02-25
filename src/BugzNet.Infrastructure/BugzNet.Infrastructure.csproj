@@ -11,6 +11,8 @@
     <PackageReference Include="FluentValidation" Version="8.6.3" />
     <PackageReference Include="MailKit" Version="2.8.0" />
     <PackageReference Include="MediatR" Version="8.0.2" />
+    <PackageReference Include="Microsoft.CodeAnalysis" Version="4.2.0" />
+    <PackageReference Include="Microsoft.CodeAnalysis.Scripting" Version="4.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.DataProtection.Extensions" Version="5.0.7" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="5.0.17" />

@@ -24,7 +24,6 @@ services:
     environment:
       ACCEPT_EULA: "Y"
       MSSQL_SA_PASSWORD: "Qwerty12"
-      SA_PASSWORD: "Qwerty12"
     ports:
       - "1433:1433"
     volumes:

@@ -43,9 +43,9 @@ namespace BugzNet.Web.Middleware
                     return;
                 }
 
-                var state = JsonConvert.DeserializeObject<AuthState>(Encoding.UTF8.GetString(Convert.FromBase64String(value)), new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.Auto });
+                var state = (AuthState) JsonConvert.DeserializeObject(Encoding.UTF8.GetString(Convert.FromBase64String(value)), new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.Auto });
 
-                if (state.VerificationRequired)
+                if (state is VerificationRequired)
                 {
                     var returnUrl = context.Request.Path.Value == "/" ? "" : "?returnUrl=" + HttpUtility.UrlEncode(context.Request.Path.Value);
                     context.Response.Redirect(context.Request.PathBase+"/MyAccount/Verify" + returnUrl);

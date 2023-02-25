@@ -46,22 +46,6 @@
       "library": "bulma@0.9.3",
       "destination": "wwwroot/lib/bulma/"
     },
-    //{
-    //  "library": "bulma-loader@1.0.1",
-    //  "destination": "wwwroot/lib/bulma-loader/"
-    //},
-    //{
-    //  "library": "bulma-modal@1.0.2",
-    //  "destination": "wwwroot/lib/bulma-modal/",
-    //  "files": [
-    //    "modal-fx.min.css",
-    //    "modal-fx.min.js"
-    //  ]
-    //},
-    //{
-    //  "library": "@Wikiki/bulma-calendar@6.1.12",
-    //  "destination": "wwwroot/lib/bulma-calendar/"
-    //},
     {
       "provider": "unpkg",
       "library": "@yaireo/tagify@4.5.0",

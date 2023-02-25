@@ -54,11 +54,11 @@ namespace BugzNet.Application.Requests.MyAccount.Commands
 
             var cookie = _signInManager.Context.Request.Cookies[AuthState.CookieName];
             var value = cookie.Split(".")[0];
-            var state = JsonConvert.DeserializeObject<AuthState>(Encoding.UTF8.GetString(Convert.FromBase64String(value)));
+            var state = (AuthState) JsonConvert.DeserializeObject(Encoding.UTF8.GetString(Convert.FromBase64String(value)), new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.Auto});
 
-            state.VerificationRequired = false;
+            state = new IdentityVerified();
 
-            var val = Convert.ToBase64String(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(state)));
+            var val = Convert.ToBase64String(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(state, new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.Objects})));
             var signature = CryptoUtility.Sign(val, _config.HMACSecret);
 
             _signInManager.Context.Response.Cookies.Append(AuthState.CookieName, $"{val}.{signature}");
