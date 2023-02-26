@@ -298,6 +298,7 @@ namespace BugzNet.Web.Extensions
                 o.Cookie.Name = prefix + "Xsrf-Token";
                 o.Cookie.SecurePolicy = securePolicy;
                 o.Cookie.HttpOnly = true;
+                o.Cookie.SameSite = EnvironmentVariables.HARD_MODE ? SameSiteMode.Strict : SameSiteMode.Lax;
             });
 
             services.ConfigureApplicationCookie(options =>

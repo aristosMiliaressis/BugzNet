@@ -71,3 +71,5 @@ verify_otp() {
 }
 
 mono otp.exe $start $end | while read otp; do verify_otp $otp; done
+
+rm *.cs *.exe
