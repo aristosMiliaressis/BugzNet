@@ -1,5 +1,5 @@
 
-# BugzNet ![build: tag](https://github.com/aristosMiliaressis/BugzNet/actions/workflows/build.yml/badge.svg)
+# BugzNet 
 
 An intentionally vulnerable .NET webapp
 
