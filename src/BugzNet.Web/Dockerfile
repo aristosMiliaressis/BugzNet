@@ -10,10 +10,12 @@ RUN dotnet restore "src/BugzNet.Web/BugzNet.Web.csproj"
 # copy git folder to add tag & commit info to build
 COPY .git/ .
 COPY src/ src/
-RUN dotnet publish "src/BugzNet.Web/BugzNet.Web.csproj" -c Release -o /app/publish
+RUN dotnet publish "src/BugzNet.Web/BugzNet.Web.csproj" -c Debug -o /app/publish
 
 FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS release
 EXPOSE 80
+EXPOSE 5000
+EXPOSE 5001
 RUN apt-get update \
 	&& apt-get install -y libgdiplus
 
